@@ -52,7 +52,7 @@ exports.getTripSeats = async (req, res) => {
 /* ================= CREATE TRIP (ADMIN) ================= */
 exports.createTrip = async (req, res) => {
   try {
-    const trip = await Trip.create(req.body)
+    const trip = await Trip.create({...req.body, partnerId: req.user._id})
     res.status(201).json(trip)
   } catch (err) {
     res.status(400).json({ message: err.message })

@@ -1,11 +1,10 @@
 const router = require('express').Router()
 const User = require('../models/User')
 const Bus = require('../models/Bus')
-const { approveTrip } = require('../controllers/admin.controller')
+const { approveTrip, rejectTrip } = require('../controllers/admin.controller')
 
 router.get('/users', async (req, res) => {
   const users = await User.find().select('-password')
-  console.log('users', users)
   res.json(users)
 })
 
@@ -33,8 +32,17 @@ router.patch('/buses/:id', async (req, res) => {
   res.json(bus)
 })
 
+router.get('/trips/pending', async (req, res) => {
+  const trips = await Trip.find({ status: 'PENDING' }).populate('routeId busId partnerId')
+  res.json(trips)
+})
+
 router.patch('/trips/:tripId/approve', approveTrip, async (req, res) => {
   res.json({ message: 'Trip approved', trip: req.trip })
+})
+
+router.patch('/trips/:id/reject', rejectTrip, async (req, res) => {
+  res.json({ message: 'Trip rejected', trip: req.trip })
 })
 
 module.exports = router

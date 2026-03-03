@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const busSchema = new mongoose.Schema({
+  partnerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
   busNumber: String,
   operator: String,
   type: String,
